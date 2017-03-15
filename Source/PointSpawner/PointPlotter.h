@@ -3,93 +3,8 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Pattern.h"
 #include "PointPlotter.generated.h"
-
-USTRUCT()
-struct FMyPoint
-{
-
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditAnywhere)
-		FVector PointLocation;
-
-	UPROPERTY(EditAnywhere)
-		bool IsSpawned = false;
-
-	UPROPERTY(EditAnywhere)
-		UParticleSystemComponent* SparkPSC;
-
-	FMyPoint() { }
-
-	FMyPoint(FVector spawnLocation) 
-	{ 
-		PointLocation = spawnLocation;
-	}
-
-	bool SpawnPoint(const UObject* world, UParticleSystem* myParticleSystem)
-	{
-		check(!PointLocation.ContainsNaN());
-
-		SparkPSC = UGameplayStatics::SpawnEmitterAtLocation(world, myParticleSystem, PointLocation, FRotator(0.0f));
-
-		if (SparkPSC) 
-		{
-			SparkPSC->ActivateSystem();
-			IsSpawned = true;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-};
-
-USTRUCT()
-struct FMyBeam
-{
-
-	GENERATED_USTRUCT_BODY()
-
-	FMyPoint* StartPoint;
-
-	FMyPoint* EndPoint;
-
-	UPROPERTY(EditAnywhere)
-		bool IsSpawned = false;
-
-	UPROPERTY(EditAnywhere)
-		UParticleSystemComponent* BeamPSC;
-
-	FMyBeam() { }
-
-	FMyBeam(FMyPoint* spawnStartPoint, FMyPoint* spawnEndPoint)
-	{ 
-		StartPoint = spawnStartPoint;
-		EndPoint = spawnEndPoint;
-	}
-
-	bool SpawnBeam(const UObject* world, UParticleSystem* myParticleSystem) 
-	{
-		check(!StartPoint->PointLocation.ContainsNaN());
-		check(!EndPoint->PointLocation.ContainsNaN());
-
-		BeamPSC = UGameplayStatics::SpawnEmitterAtLocation(world, myParticleSystem, StartPoint->PointLocation, FRotator(0.0f));
-		if (BeamPSC)
-		{
-			BeamPSC->ActivateSystem(true);
-			BeamPSC->SetBeamSourcePoint(0, StartPoint->PointLocation, 0);
-			BeamPSC->SetBeamTargetPoint(0, EndPoint->PointLocation, 0);
-			IsSpawned = true;
-			return true;
-		} 
-		else
-		{
-			return false;
-		}
-	}
-};
 
 UCLASS()
 class POINTSPAWNER_API APointPlotter : public AActor
@@ -108,11 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// called by timer to spawn next point
-	void SpawnNextPoint();
-
-	void SpawnNextBeam();
-
+	// called by timer on each tick
 	void AdvanceTimer();
 
 	void SpawnTimerHasFinished();
@@ -121,17 +32,9 @@ public:
 
 	int32 CurrentTime;
 
-	TArray<FMyPoint> newPoints;
-	
-	TArray<FMyBeam> newBeams;
+	int32 NumberOfPoints;
 
-	UPROPERTY(EditAnywhere)
-		UParticleSystem* mySparker;
-	UPROPERTY(EditAnywhere)
-		UParticleSystem* myBeam;
-	UPROPERTY(EditAnywhere)
-		int32 NumberOfPoints = 20;
-	
+	Pattern* RandomPath;
 
 };
 

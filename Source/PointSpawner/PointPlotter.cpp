@@ -12,10 +12,14 @@ APointPlotter::APointPlotter()
 	PrimaryActorTick.bCanEverTick = false;
 	
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> locateSparker(TEXT("ParticleSystem'/Game/P_Sparker.P_Sparker'"));
-	mySparker = locateSparker.Object;
+	UParticleSystem* mySparker = locateSparker.Object;
 	
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> locateBeam(TEXT("ParticleSystem'/Game/P_Beam.P_Beam'"));
-	myBeam = locateBeam.Object;
+	UParticleSystem* myBeam = locateBeam.Object;
+
+	NumberOfPoints = 32;
+
+	RandomPath = new Pattern(mySparker, myBeam, NumberOfPoints);
 	
 }
 
@@ -26,19 +30,7 @@ void APointPlotter::BeginPlay()
 
 	CurrentTime = NumberOfPoints;
 
-	for (int32 n = 0; n < NumberOfPoints; n++)
-	{
-		FVector newRandomLocation((n * FMath::RandRange(20.0f, 40.0f)), (n * FMath::RandRange(20.0f, 40.0f)), (n * FMath::RandRange(20.0f, 40.0f)));
-		FMyPoint newPoint(newRandomLocation);
-		newPoints.Add(newPoint);
-
-	}
-
-	for (int32 n = 0; n < newPoints.Num() - 1; n++)
-	{
-		FMyBeam newBeam(&newPoints[n], &newPoints[n + 1]);
-		newBeams.Add(newBeam);
-	}
+	RandomPath->GeneratePattern();
 
 	GetWorldTimerManager().SetTimer(SpawnTimerHandle, this, &APointPlotter::AdvanceTimer, 0.3f, true);
 }
@@ -53,8 +45,7 @@ void APointPlotter::Tick(float DeltaTime)
 void APointPlotter::AdvanceTimer()
 {
 	--CurrentTime;
-	SpawnNextPoint();
-	SpawnNextBeam();
+	RandomPath->SpawnNextStep(GetWorld());
 	if (CurrentTime < 1)
 	{
 		//We're done counting down, so stop running the timer.
@@ -62,30 +53,6 @@ void APointPlotter::AdvanceTimer()
 		SpawnTimerHasFinished();
 	}
 	
-}
-
-void APointPlotter::SpawnNextPoint()
-{	
-	for (int32 n = 0; n < newPoints.Num(); n++)
-	{
-		if (!newPoints[n].IsSpawned)
-		{
-			newPoints[n].SpawnPoint(GetWorld(), mySparker);
-			break;
-		}
-	}
-}
-
-void APointPlotter::SpawnNextBeam()
-{
-	for (int32 n = 0; n < newBeams.Num(); n++)
-	{
-		if (!newBeams[n].IsSpawned)
-		{
-			newBeams[n].SpawnBeam(GetWorld(), myBeam);
-			break;
-		}
-	}
 }
 
 void APointPlotter::SpawnTimerHasFinished()
