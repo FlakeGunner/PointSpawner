@@ -92,7 +92,7 @@ class POINTSPAWNER_API Pattern
 {
 public:
 	
-	Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints);
+	Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, FVector Direction);
 
 	Pattern();
 	
@@ -104,14 +104,15 @@ public:
 
 private:
 
-	TArray<FMyPoint> newPoints;
+	TArray<FMyPoint> m_Points;
 	
-	TArray<FMyBeam> newBeams;
+	TArray<FMyBeam> m_Beams;
 	
-	UParticleSystem* mySparker;
+	UParticleSystem* m_Sparker;
 	
-	UParticleSystem* myBeam;
+	UParticleSystem* m_Beam;
 
-	int32 NumberOfPoints; 
+	int32 m_NumberOfPoints; 
 
+	FVector m_Direction;
 };

@@ -28,13 +28,13 @@ public:
 
 	void SpawnTimerHasFinished();
 
-	FTimerHandle SpawnTimerHandle;
+	FTimerHandle m_SpawnTimerHandle;
 
-	int32 CurrentTime;
+	int32 m_CurrentTime;
 
-	int32 NumberOfPoints;
+	int32 m_NumberOfPoints;
 
-	Pattern* RandomPath;
+	Pattern* m_RandomPath;
 
 };
 

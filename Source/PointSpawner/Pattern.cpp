@@ -2,12 +2,14 @@
 
 #include "PointSpawner.h"
 #include "Pattern.h"
+#include <cmath> 
 
-Pattern::Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints)
+Pattern::Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, FVector Direction)
 {
-	mySparker = Sparker;
-	myBeam = Beam;
-	this->NumberOfPoints = NumberOfPoints;
+	m_Sparker = Sparker;
+	m_Beam = Beam;
+	m_NumberOfPoints = NumberOfPoints;
+	m_Direction = Direction;
 }
 
 Pattern::Pattern()
@@ -16,46 +18,99 @@ Pattern::Pattern()
 
 Pattern::~Pattern()
 {
-	mySparker = nullptr;
-	myBeam = nullptr;
-	newPoints.Empty();
-	newBeams.Empty();
+	m_Sparker = nullptr;
+	m_Beam = nullptr;
+	m_Points.Empty();
+	m_Beams.Empty();
 }
 
 void Pattern::GeneratePattern()
 {
-	for (int32 n = 0; n < NumberOfPoints; n++)
-	{
-		FVector newRandomLocation((n * FMath::RandRange(20.0f, 40.0f)), (n * FMath::RandRange(20.0f, 40.0f)), (n * FMath::RandRange(20.0f, 40.0f)));
+	float generatedX, generatedY, generatedZ, randomRange;
+
+	generatedX = generatedZ = generatedY = 0;
+
+	randomRange = 80.0f;
+
+	for (int32 n = 0; n < m_NumberOfPoints; n++)
+	{		
+		if (m_Direction == FVector::UpVector)
+		{
+			generatedX = FMath::RandRange(-randomRange, randomRange);
+			generatedY = FMath::RandRange(-randomRange, randomRange);
+			generatedZ += FMath::RandRange((randomRange / 2), randomRange);
+		}
+		else if (m_Direction == -FVector::UpVector)
+		{
+			generatedX = FMath::RandRange(-randomRange, randomRange);
+			generatedY = FMath::RandRange(-randomRange, randomRange);
+			generatedZ += FMath::RandRange(-(randomRange / 2), -randomRange);
+			
+		}
+		else if (m_Direction == FVector::RightVector)
+		{
+			generatedX = FMath::RandRange(-randomRange, randomRange);
+			generatedY += FMath::RandRange((randomRange / 2), randomRange);
+			generatedZ = FMath::RandRange(-randomRange, randomRange);
+			
+		}
+		else if (m_Direction == -FVector::RightVector)
+		{
+			generatedX = FMath::RandRange(-randomRange, randomRange);
+			generatedY += FMath::RandRange(-(randomRange / 2), -randomRange);
+			generatedZ = FMath::RandRange(-randomRange, randomRange);
+			
+		}
+		else if (m_Direction == -FVector::ForwardVector)
+		{
+			generatedX += FMath::RandRange((randomRange / 2), randomRange);
+			generatedY = FMath::RandRange(-randomRange, randomRange);
+			generatedZ = FMath::RandRange(-randomRange, randomRange);
+
+		}
+		else if (m_Direction == -FVector::ForwardVector)
+		{
+			generatedX += FMath::RandRange(-(randomRange / 2), -randomRange);
+			generatedY = FMath::RandRange(-randomRange, randomRange);
+			generatedZ = FMath::RandRange(-randomRange, randomRange);
+		}
+		else
+		{
+			generatedX = FMath::RandRange(-(randomRange*3), (randomRange * 3));
+			generatedY = FMath::RandRange(-(randomRange * 3), (randomRange * 3));
+			generatedZ = FMath::RandRange(-(randomRange * 3), (randomRange * 3));
+		}
+
+		FVector newRandomLocation(generatedX, generatedY, generatedZ);
 		FMyPoint newPoint(newRandomLocation);
-		newPoints.Add(newPoint);
+		m_Points.Add(newPoint);
 
 	}
 
-	for (int32 n = 0; n < newPoints.Num() - 1; n++)
+	for (int32 n = 0; n < m_Points.Num() - 1; n++)
 	{
-		FMyBeam newBeam(&newPoints[n], &newPoints[n + 1]);
-		newBeams.Add(newBeam);
+		FMyBeam newBeam(&m_Points[n], &m_Points[n + 1]);
+		m_Beams.Add(newBeam);
 	}
 
 }
 
 void Pattern::SpawnNextStep(const UObject* world)
 {
-	for (int32 n = 0; n < newPoints.Num(); n++)
+	for (int32 n = 0; n < m_Points.Num(); n++)
 	{
-		if (!newPoints[n].IsSpawned)
+		if (!m_Points[n].IsSpawned)
 		{
-			newPoints[n].SpawnPoint(world, mySparker);
+			m_Points[n].SpawnPoint(world, m_Sparker);
 			break;
 		}
 	}
 
-	for (int32 n = 0; n < newBeams.Num(); n++)
+	for (int32 n = 0; n < m_Beams.Num(); n++)
 	{
-		if (!newBeams[n].IsSpawned)
+		if (!m_Beams[n].IsSpawned)
 		{
-			newBeams[n].SpawnBeam(world, myBeam);
+			m_Beams[n].SpawnBeam(world, m_Beam);
 			break;
 		}
 	}

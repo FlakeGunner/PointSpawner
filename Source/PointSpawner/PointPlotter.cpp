@@ -17,9 +17,9 @@ APointPlotter::APointPlotter()
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> locateBeam(TEXT("ParticleSystem'/Game/P_Beam.P_Beam'"));
 	UParticleSystem* myBeam = locateBeam.Object;
 
-	NumberOfPoints = 32;
+	m_NumberOfPoints = 32;
 
-	RandomPath = new Pattern(mySparker, myBeam, NumberOfPoints);
+	m_RandomPath = new Pattern(mySparker, myBeam, m_NumberOfPoints, -FVector::RightVector);
 	
 }
 
@@ -28,11 +28,11 @@ void APointPlotter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CurrentTime = NumberOfPoints;
+	m_CurrentTime = m_NumberOfPoints;
 
-	RandomPath->GeneratePattern();
+	m_RandomPath->GeneratePattern();
 
-	GetWorldTimerManager().SetTimer(SpawnTimerHandle, this, &APointPlotter::AdvanceTimer, 0.3f, true);
+	GetWorldTimerManager().SetTimer(m_SpawnTimerHandle, this, &APointPlotter::AdvanceTimer, 0.3f, true);
 }
 
 // Called every frame
@@ -44,12 +44,12 @@ void APointPlotter::Tick(float DeltaTime)
 
 void APointPlotter::AdvanceTimer()
 {
-	--CurrentTime;
-	RandomPath->SpawnNextStep(GetWorld());
-	if (CurrentTime < 1)
+	--m_CurrentTime;
+	m_RandomPath->SpawnNextStep(GetWorld());
+	if (m_CurrentTime < 1)
 	{
 		//We're done counting down, so stop running the timer.
-		GetWorldTimerManager().ClearTimer(SpawnTimerHandle);
+		GetWorldTimerManager().ClearTimer(m_SpawnTimerHandle);
 		SpawnTimerHasFinished();
 	}
 	
