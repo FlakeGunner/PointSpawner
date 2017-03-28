@@ -12,14 +12,18 @@ APointPlotter::APointPlotter()
 	PrimaryActorTick.bCanEverTick = false;
 	
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> locateSparker(TEXT("ParticleSystem'/Game/P_Sparker.P_Sparker'"));
-	UParticleSystem* mySparker = locateSparker.Object;
-	
+	if (&locateSparker != nullptr)
+	{
+		m_Sparker = locateSparker.Object;
+	}
+
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> locateBeam(TEXT("ParticleSystem'/Game/P_Beam.P_Beam'"));
-	UParticleSystem* myBeam = locateBeam.Object;
+	if (&locateBeam != nullptr)
+	{
+		m_Beam = locateBeam.Object;
+	}
 
 	m_NumberOfPoints = 32;
-
-	m_RandomPath = new Pattern(mySparker, myBeam, m_NumberOfPoints, -FVector::RightVector);
 	
 }
 
@@ -28,11 +32,6 @@ void APointPlotter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	m_CurrentTime = m_NumberOfPoints;
-
-	m_RandomPath->GeneratePattern();
-
-	GetWorldTimerManager().SetTimer(m_SpawnTimerHandle, this, &APointPlotter::AdvanceTimer, 0.3f, true);
 }
 
 // Called every frame
@@ -57,7 +56,32 @@ void APointPlotter::AdvanceTimer()
 
 void APointPlotter::SpawnTimerHasFinished()
 {
+	m_RandomPath->TeardownPattern();
+
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Timer Finished!"));
+}
+
+void APointPlotter::PlotPattern(EPlotDirection Direction)
+{
+	m_Direction = Direction;
+
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EPlotDirection"), true);
+	if (!EnumPtr)
+	{
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("invalid enum"));
+	}
+
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, EnumPtr->GetEnumName((int32)m_Direction));
+
+	m_RandomPath = new Pattern(m_Sparker, m_Beam, m_NumberOfPoints, Direction);
+
+	m_CurrentTime = m_NumberOfPoints;
+
+	m_RandomPath->GeneratePattern();
+
+	GetWorldTimerManager().SetTimer(m_SpawnTimerHandle, this, &APointPlotter::AdvanceTimer, 0.3f, true);
 }
 

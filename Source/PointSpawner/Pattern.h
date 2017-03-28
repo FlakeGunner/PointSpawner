@@ -12,7 +12,7 @@ class POINTSPAWNER_API Pattern
 {
 public:
 	
-	Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, FVector Direction);
+	Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, EPlotDirection Direction);
 
 	Pattern();
 	
@@ -21,6 +21,8 @@ public:
 	void GeneratePattern();
 
 	void SpawnNextStep(const UObject* world);
+
+	void TeardownPattern();
 
 private:
 
@@ -34,5 +36,5 @@ private:
 
 	int32 m_NumberOfPoints; 
 
-	FVector m_Direction;
+	EPlotDirection m_Direction;
 };

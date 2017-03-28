@@ -6,14 +6,15 @@
 #include "MyStructsAndEnums.generated.h"
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
-enum class EVictoryEnum : uint8
+enum class EPlotDirection : uint8
 {
-	UP 	UMETA(DisplayName = "Upwards"),
+	UP 		UMETA(DisplayName = "Upwards"),
 	DOWN 	UMETA(DisplayName = "Downwards"),
 	RIGHT	UMETA(DisplayName = "Right"),
 	LEFT	UMETA(DisplayName = "Left"),
 	FORWARD	UMETA(DisplayName = "Forwards"),
-	BACK	UMETA(DisplayName = "Backwards")
+	BACK	UMETA(DisplayName = "Backwards"),
+	RANDOM	UMETA(DisplayName = "Random")
 };
 
 
@@ -23,7 +24,7 @@ struct FMyPoint
 
 	GENERATED_USTRUCT_BODY()
 
-		FVector PointLocation;
+	FVector PointLocation;
 
 	bool IsSpawned = false;
 
@@ -31,6 +32,11 @@ struct FMyPoint
 
 	FMyPoint() { }
 
+	~FMyPoint()
+	{
+		SparkPSC = nullptr;
+	}
+	
 	FMyPoint(FVector spawnLocation)
 	{
 		PointLocation = spawnLocation;
@@ -53,6 +59,14 @@ struct FMyPoint
 			return false;
 		}
 	}
+
+	void Teardown()
+	{
+		
+		SparkPSC->Deactivate();
+		SparkPSC->DestroyComponent();
+		
+	}
 };
 
 USTRUCT()
@@ -61,7 +75,7 @@ struct FMyBeam
 
 	GENERATED_USTRUCT_BODY()
 
-		FMyPoint* StartPoint;
+	FMyPoint* StartPoint;
 
 	FMyPoint* EndPoint;
 
@@ -70,6 +84,13 @@ struct FMyBeam
 	UParticleSystemComponent* BeamPSC;
 
 	FMyBeam() { }
+	
+	~FMyBeam() 
+	{
+		StartPoint = nullptr;
+		EndPoint = nullptr;
+		BeamPSC = nullptr;
+	}
 
 	FMyBeam(FMyPoint* spawnStartPoint, FMyPoint* spawnEndPoint)
 	{
@@ -95,5 +116,16 @@ struct FMyBeam
 		{
 			return false;
 		}
+	}
+
+	void Teardown()
+	{
+		
+		BeamPSC->Deactivate();
+		BeamPSC->DestroyComponent();
+		StartPoint = nullptr;
+		EndPoint = nullptr;
+		BeamPSC = nullptr;
+		
 	}
 };

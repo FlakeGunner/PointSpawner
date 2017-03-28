@@ -4,7 +4,7 @@
 #include "Pattern.h"
 #include <cmath> 
 
-Pattern::Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, FVector Direction)
+Pattern::Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, EPlotDirection Direction)
 {
 	m_Sparker = Sparker;
 	m_Beam = Beam;
@@ -34,51 +34,57 @@ void Pattern::GeneratePattern()
 
 	for (int32 n = 0; n < m_NumberOfPoints; n++)
 	{		
-		if (m_Direction == FVector::UpVector)
+		if (m_Direction == EPlotDirection::UP)
 		{
 			generatedX = FMath::RandRange(-randomRange, randomRange);
 			generatedY = FMath::RandRange(-randomRange, randomRange);
 			generatedZ += FMath::RandRange((randomRange / 2), randomRange);
 		}
-		else if (m_Direction == -FVector::UpVector)
+		else if (m_Direction == EPlotDirection::DOWN)
 		{
 			generatedX = FMath::RandRange(-randomRange, randomRange);
 			generatedY = FMath::RandRange(-randomRange, randomRange);
 			generatedZ += FMath::RandRange(-(randomRange / 2), -randomRange);
 			
 		}
-		else if (m_Direction == FVector::RightVector)
+		else if (m_Direction == EPlotDirection::RIGHT)
 		{
 			generatedX = FMath::RandRange(-randomRange, randomRange);
 			generatedY += FMath::RandRange((randomRange / 2), randomRange);
 			generatedZ = FMath::RandRange(-randomRange, randomRange);
 			
 		}
-		else if (m_Direction == -FVector::RightVector)
+		else if (m_Direction == EPlotDirection::LEFT)
 		{
 			generatedX = FMath::RandRange(-randomRange, randomRange);
 			generatedY += FMath::RandRange(-(randomRange / 2), -randomRange);
 			generatedZ = FMath::RandRange(-randomRange, randomRange);
 			
 		}
-		else if (m_Direction == -FVector::ForwardVector)
+		else if (m_Direction == EPlotDirection::FORWARD)
 		{
 			generatedX += FMath::RandRange((randomRange / 2), randomRange);
 			generatedY = FMath::RandRange(-randomRange, randomRange);
 			generatedZ = FMath::RandRange(-randomRange, randomRange);
 
 		}
-		else if (m_Direction == -FVector::ForwardVector)
+		else if (m_Direction == EPlotDirection::BACK)
 		{
 			generatedX += FMath::RandRange(-(randomRange / 2), -randomRange);
 			generatedY = FMath::RandRange(-randomRange, randomRange);
 			generatedZ = FMath::RandRange(-randomRange, randomRange);
 		}
-		else
+		else if (m_Direction == EPlotDirection::RANDOM)
 		{
 			generatedX = FMath::RandRange(-(randomRange*3), (randomRange * 3));
 			generatedY = FMath::RandRange(-(randomRange * 3), (randomRange * 3));
 			generatedZ = FMath::RandRange(-(randomRange * 3), (randomRange * 3));
+		}
+		else
+		{
+			generatedX = 10 * n;
+			generatedY = 10 * n;
+			generatedZ = 10 * n;
 		}
 
 		FVector newRandomLocation(generatedX, generatedY, generatedZ);
@@ -115,4 +121,22 @@ void Pattern::SpawnNextStep(const UObject* world)
 		}
 	}
 
+}
+
+void Pattern::TeardownPattern()
+{
+	for (auto& CurBeam : m_Beams)
+	{
+		CurBeam.Teardown();
+	}
+
+	for (auto& CurPoint : m_Points)
+	{
+		CurPoint.Teardown();
+	}
+	m_Sparker = nullptr;
+	m_Beam = nullptr;
+	m_Points.Empty();
+	m_Beams.Empty();
+	
 }

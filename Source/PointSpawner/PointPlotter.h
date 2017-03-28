@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "MyStructsAndEnums.h"
 #include "GameFramework/Actor.h"
 #include "Pattern.h"
 #include "PointPlotter.generated.h"
@@ -14,6 +15,8 @@ class POINTSPAWNER_API APointPlotter : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APointPlotter();
+
+	void PlotPattern(EPlotDirection Direction);
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,6 +39,11 @@ public:
 
 	Pattern* m_RandomPath;
 
+	UParticleSystem* m_Sparker;
+
+	UParticleSystem* m_Beam;
+
+	EPlotDirection m_Direction;
 };
 
 
