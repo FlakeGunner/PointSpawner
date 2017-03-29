@@ -62,9 +62,11 @@ struct FMyPoint
 
 	void Teardown()
 	{
-		
-		SparkPSC->Deactivate();
-		SparkPSC->DestroyComponent();
+		if (SparkPSC)
+		{
+			SparkPSC->Deactivate();
+			SparkPSC->DestroyComponent();
+		}
 		
 	}
 };
@@ -120,9 +122,11 @@ struct FMyBeam
 
 	void Teardown()
 	{
-		
-		BeamPSC->Deactivate();
-		BeamPSC->DestroyComponent();
+		if (BeamPSC)
+		{
+			BeamPSC->Deactivate();
+			BeamPSC->DestroyComponent();
+		}
 		StartPoint = nullptr;
 		EndPoint = nullptr;
 		BeamPSC = nullptr;

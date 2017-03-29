@@ -47,12 +47,18 @@ void Pattern::TeardownPattern()
 {
 	for (auto& CurBeam : m_Beams)
 	{
-		CurBeam.Teardown();
+		if (CurBeam.IsSpawned)
+		{
+			CurBeam.Teardown();
+		}
 	}
 
 	for (auto& CurPoint : m_Points)
 	{
-		CurPoint.Teardown();
+		if (CurPoint.IsSpawned)
+		{
+			CurPoint.Teardown();
+		}
 	}
 	m_Sparker = nullptr;
 	m_Beam = nullptr;
