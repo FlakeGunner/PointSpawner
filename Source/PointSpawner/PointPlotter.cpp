@@ -73,6 +73,7 @@ void APointPlotter::PlotPattern(Pattern* PatternToPlot)
 
 void APointPlotter::TeardownPattern()
 {
+	GetWorldTimerManager().ClearTimer(m_SpawnTimerHandle);
 	m_RandomPath->TeardownPattern();
 }
 
