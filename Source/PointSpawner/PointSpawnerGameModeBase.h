@@ -21,6 +21,8 @@ public:
 		void ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass);
 	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
 		void PlotDirection(EPlotDirection Direction);
+	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
+		void PlotSpiral();
 
 protected:
 	virtual void BeginPlay() override;

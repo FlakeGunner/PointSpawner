@@ -2,18 +2,15 @@
 
 #pragma once
 
+#include "Kismet/KismetMathLibrary.h"
 #include "Pattern.h"
 /**
  * 
  */
-class POINTSPAWNER_API RandomPath: public Pattern
+class POINTSPAWNER_API Spiral: public Pattern
 {
 public:
-
-	RandomPath(int32 NumberOfPoints, EPlotDirection Direction);
+	Spiral(int32 NumberOfPoints);
 
 	void GeneratePattern();
-
-protected:
-	EPlotDirection m_Direction;
 };

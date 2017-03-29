@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	APointPlotter();
 
-	void PlotPattern(EPlotDirection Direction);
+	void PlotPattern(Pattern* PatternToPlot);
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,15 +36,11 @@ public:
 
 	int32 m_CurrentTime;
 
-	int32 m_NumberOfPoints;
-
 	Pattern* m_RandomPath;
 
 	UParticleSystem* m_Sparker;
 
 	UParticleSystem* m_Beam;
-
-	EPlotDirection m_Direction;
 };
 
 

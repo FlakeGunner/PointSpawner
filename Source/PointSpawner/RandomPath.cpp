@@ -3,10 +3,8 @@
 #include "PointSpawner.h"
 #include "RandomPath.h"
 
-RandomPath::RandomPath(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, EPlotDirection Direction)
+RandomPath::RandomPath(int32 NumberOfPoints, EPlotDirection Direction)
 {
-	m_Sparker = Sparker;
-	m_Beam = Beam;
 	m_NumberOfPoints = NumberOfPoints;
 	m_Direction = Direction;
 }
@@ -21,6 +19,8 @@ void RandomPath::GeneratePattern()
 
 	for (int32 n = 0; n < m_NumberOfPoints; n++)
 	{
+		generatedX = generatedZ = generatedY = 0;
+
 		if (m_Direction == EPlotDirection::UP)
 		{
 			generatedX = FMath::RandRange(-randomRange, randomRange);
@@ -87,40 +87,5 @@ void RandomPath::GeneratePattern()
 	}
 }
 
-void RandomPath::SpawnNextStep(const UObject * world)
-{
-	for (int32 n = 0; n < m_Points.Num(); n++)
-	{
-		if (!m_Points[n].IsSpawned)
-		{
-			m_Points[n].SpawnPoint(world, m_Sparker);
-			break;
-		}
-	}
 
-	for (int32 n = 0; n < m_Beams.Num(); n++)
-	{
-		if (!m_Beams[n].IsSpawned)
-		{
-			m_Beams[n].SpawnBeam(world, m_Beam);
-			break;
-		}
-	}
-}
 
-void RandomPath::TeardownPattern()
-{
-	for (auto& CurBeam : m_Beams)
-	{
-		CurBeam.Teardown();
-	}
-
-	for (auto& CurPoint : m_Points)
-	{
-		CurPoint.Teardown();
-	}
-	m_Sparker = nullptr;
-	m_Beam = nullptr;
-	m_Points.Empty();
-	m_Beams.Empty();
-}

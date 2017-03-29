@@ -18,9 +18,13 @@ public:
 
 	virtual void GeneratePattern() = 0;
 
-	virtual void SpawnNextStep(const UObject* world) = 0;
+	void InitParticleSystems(UParticleSystem* Sparker, UParticleSystem* Beam);
 
-	virtual void TeardownPattern() = 0;
+	void SpawnNextStep(const UObject* world);
+
+	void TeardownPattern();
+
+	int32 m_NumberOfPoints;
 
 protected:
 
@@ -31,8 +35,4 @@ protected:
 	UParticleSystem* m_Sparker;
 	
 	UParticleSystem* m_Beam;
-
-	int32 m_NumberOfPoints; 
-
-	EPlotDirection m_Direction;
 };

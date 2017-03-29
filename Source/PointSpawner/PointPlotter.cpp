@@ -22,8 +22,6 @@ APointPlotter::APointPlotter()
 	{
 		m_Beam = locateBeam.Object;
 	}
-
-	m_NumberOfPoints = 32;
 	
 }
 
@@ -62,23 +60,13 @@ void APointPlotter::SpawnTimerHasFinished()
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Timer Finished!"));
 }
 
-void APointPlotter::PlotPattern(EPlotDirection Direction)
+void APointPlotter::PlotPattern(Pattern* PatternToPlot)
 {
-	m_Direction = Direction;
+	m_RandomPath = PatternToPlot;
 
-	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EPlotDirection"), true);
-	if (!EnumPtr)
-	{
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("invalid enum"));
-	}
+	m_CurrentTime = PatternToPlot->m_NumberOfPoints;
 
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, EnumPtr->GetEnumName((int32)m_Direction));
-
-	m_RandomPath = new RandomPath(m_Sparker, m_Beam, m_NumberOfPoints, Direction);
-
-	m_CurrentTime = m_NumberOfPoints;
+	m_RandomPath->InitParticleSystems(m_Sparker, m_Beam);
 
 	m_RandomPath->GeneratePattern();
 
