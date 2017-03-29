@@ -19,7 +19,6 @@ void RandomPath::GeneratePattern()
 
 	for (int32 n = 0; n < m_NumberOfPoints; n++)
 	{
-		generatedX = generatedZ = generatedY = 0;
 
 		if (m_Direction == EPlotDirection::UP)
 		{
