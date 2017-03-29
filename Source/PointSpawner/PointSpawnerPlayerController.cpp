@@ -21,6 +21,8 @@ void APointSpawnerPlayerController::ReturnToMenu()
 	if (GetWorld())
 	{
 		APointSpawnerGameModeBase* CurrentGameMode = Cast<APointSpawnerGameModeBase>(GetWorld()->GetAuthGameMode());
+		SetInputMode(FInputModeUIOnly());
+		bShowMouseCursor = true;
 		CurrentGameMode->ReturnToMenu();
 	}
 }
