@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/PlayerController.h"
+#include "PointSpawnerGameModeBase.h"
 #include "PointSpawnerPlayerController.generated.h"
 
 /**
@@ -15,6 +16,8 @@ class POINTSPAWNER_API APointSpawnerPlayerController : public APlayerController
 	
 public:
 	virtual void BeginPlay() override;
-	
-	
+
+	virtual void SetupInputComponent() override;
+
+	void ReturnToMenu();
 };

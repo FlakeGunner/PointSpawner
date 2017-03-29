@@ -25,13 +25,13 @@ void Spiral::GeneratePattern()
 
 		generatedY = radius * (FMath::Sin(FMath::DegreesToRadians(currentDegree)));
 
-		generatedZ += 20;
+		generatedZ += 15;
 
 		FVector newRandomLocation(generatedX, generatedY, generatedZ);
 		FMyPoint newPoint(newRandomLocation);
 		m_Points.Add(newPoint);
 
-		radius += 30;
+		radius += 10;
 	}
 
 	for (int32 n = 0; n < m_Points.Num() - 1; n++)

@@ -75,3 +75,13 @@ void APointSpawnerGameModeBase::PlotSpiral()
 		}
 	}
 }
+
+void APointSpawnerGameModeBase::ReturnToMenu()
+{
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("returning to menu in game mode"));
+
+	m_PointPlotter->TeardownPattern();
+	ChangeMenuWidget(StartingWidgetClass);
+
+}

@@ -23,6 +23,8 @@ public:
 		void PlotDirection(EPlotDirection Direction);
 	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
 		void PlotSpiral();
+	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
+		void ReturnToMenu();
 
 protected:
 	virtual void BeginPlay() override;

@@ -54,8 +54,6 @@ void APointPlotter::AdvanceTimer()
 
 void APointPlotter::SpawnTimerHasFinished()
 {
-	m_RandomPath->TeardownPattern();
-
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Timer Finished!"));
 }
@@ -71,5 +69,10 @@ void APointPlotter::PlotPattern(Pattern* PatternToPlot)
 	m_RandomPath->GeneratePattern();
 
 	GetWorldTimerManager().SetTimer(m_SpawnTimerHandle, this, &APointPlotter::AdvanceTimer, 0.3f, true);
+}
+
+void APointPlotter::TeardownPattern()
+{
+	m_RandomPath->TeardownPattern();
 }
 

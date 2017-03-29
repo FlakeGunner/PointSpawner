@@ -19,6 +19,8 @@ public:
 
 	void PlotPattern(Pattern* PatternToPlot);
 
+	void TeardownPattern();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

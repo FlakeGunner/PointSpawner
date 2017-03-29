@@ -9,3 +9,18 @@ void APointSpawnerPlayerController::BeginPlay()
 	SetInputMode(FInputModeUIOnly());
 	bShowMouseCursor = true;
 }
+
+void APointSpawnerPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	InputComponent->BindAction("ReturnToMenu", IE_Released, this, &APointSpawnerPlayerController::ReturnToMenu);
+}
+
+void APointSpawnerPlayerController::ReturnToMenu()
+{
+	if (GetWorld())
+	{
+		APointSpawnerGameModeBase* CurrentGameMode = Cast<APointSpawnerGameModeBase>(GetWorld()->GetAuthGameMode());
+		CurrentGameMode->ReturnToMenu();
+	}
+}
