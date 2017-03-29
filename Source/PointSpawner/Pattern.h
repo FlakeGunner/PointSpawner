@@ -11,20 +11,18 @@
 class POINTSPAWNER_API Pattern
 {
 public:
-	
-	Pattern(UParticleSystem* Sparker, UParticleSystem* Beam, int32 NumberOfPoints, EPlotDirection Direction);
 
 	Pattern();
 	
 	~Pattern();
 
-	void GeneratePattern();
+	virtual void GeneratePattern() = 0;
 
-	void SpawnNextStep(const UObject* world);
+	virtual void SpawnNextStep(const UObject* world) = 0;
 
-	void TeardownPattern();
+	virtual void TeardownPattern() = 0;
 
-private:
+protected:
 
 	TArray<FMyPoint> m_Points;
 	

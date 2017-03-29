@@ -76,7 +76,7 @@ void APointPlotter::PlotPattern(EPlotDirection Direction)
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, EnumPtr->GetEnumName((int32)m_Direction));
 
-	m_RandomPath = new Pattern(m_Sparker, m_Beam, m_NumberOfPoints, Direction);
+	m_RandomPath = new RandomPath(m_Sparker, m_Beam, m_NumberOfPoints, Direction);
 
 	m_CurrentTime = m_NumberOfPoints;
 

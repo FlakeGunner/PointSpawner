@@ -5,6 +5,7 @@
 #include "MyStructsAndEnums.h"
 #include "GameFramework/Actor.h"
 #include "Pattern.h"
+#include "RandomPath.h"
 #include "PointPlotter.generated.h"
 
 UCLASS()
