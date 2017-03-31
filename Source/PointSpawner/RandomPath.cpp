@@ -9,6 +9,11 @@ RandomPath::RandomPath(int32 NumberOfPoints, EPlotDirection Direction)
 	m_Direction = Direction;
 }
 
+int32 RandomPath::GetNumberOfPoints()
+{
+	return m_NumberOfPoints;
+}
+
 void RandomPath::GeneratePattern()
 {
 	float generatedX, generatedY, generatedZ, randomRange;

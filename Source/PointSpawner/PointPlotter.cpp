@@ -2,7 +2,7 @@
 
 #include "PointSpawner.h"
 #include "PointPlotter.h"
-#include "Kismet/GameplayStatics.h"
+
 
 
 // Sets default values
@@ -22,7 +22,6 @@ APointPlotter::APointPlotter()
 	{
 		m_Beam = locateBeam.Object;
 	}
-	
 }
 
 // Called when the game starts or when spawned
@@ -62,11 +61,12 @@ void APointPlotter::PlotPattern(Pattern* PatternToPlot)
 {
 	m_RandomPath = PatternToPlot;
 
-	m_CurrentTime = PatternToPlot->m_NumberOfPoints;
-
 	m_RandomPath->InitParticleSystems(m_Sparker, m_Beam);
 
 	m_RandomPath->GeneratePattern();
+
+	//must be called after generate pattern
+	m_CurrentTime = PatternToPlot->GetNumberOfPoints();
 
 	GetWorldTimerManager().SetTimer(m_SpawnTimerHandle, this, &APointPlotter::AdvanceTimer, 0.3f, true);
 }

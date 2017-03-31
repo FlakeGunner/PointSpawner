@@ -2,7 +2,7 @@
 
 #include "PointSpawner.h"
 #include "Pattern.h"
-#include <cmath> 
+
 
 Pattern::Pattern()
 {
@@ -22,13 +22,14 @@ void Pattern::InitParticleSystems(UParticleSystem* Sparker, UParticleSystem* Bea
 	m_Beam = Beam;
 }
 
-void Pattern::SpawnNextStep(const UObject* world)
+void Pattern::SpawnNextStep(UWorld* world)
 {
 	for (int32 n = 0; n < m_Points.Num(); n++)
 	{
 		if (!m_Points[n].IsSpawned)
 		{
 			m_Points[n].SpawnPoint(world, m_Sparker);
+
 			break;
 		}
 	}

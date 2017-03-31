@@ -14,6 +14,8 @@ public:
 
 	void GeneratePattern();
 
+	int32 GetNumberOfPoints();
+
 protected:
 	EPlotDirection m_Direction;
 };

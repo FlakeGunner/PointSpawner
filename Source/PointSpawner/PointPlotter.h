@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Pattern.h"
 #include "RandomPath.h"
+#include "Kismet/GameplayStatics.h"
 #include "PointPlotter.generated.h"
 
 UCLASS()
@@ -43,6 +44,7 @@ public:
 	UParticleSystem* m_Sparker;
 
 	UParticleSystem* m_Beam;
+	
 };
 
 

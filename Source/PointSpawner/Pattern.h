@@ -18,9 +18,11 @@ public:
 
 	virtual void GeneratePattern() = 0;
 
+	virtual int32 GetNumberOfPoints() = 0;
+
 	void InitParticleSystems(UParticleSystem* Sparker, UParticleSystem* Beam);
 
-	void SpawnNextStep(const UObject* world);
+	void SpawnNextStep(UWorld* world);
 
 	void TeardownPattern();
 

@@ -2,7 +2,7 @@
 
 #pragma once
 
-
+#include "PointLabel.h"
 #include "MyStructsAndEnums.generated.h"
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
@@ -30,6 +30,8 @@ struct FMyPoint
 
 	UParticleSystemComponent* SparkPSC;
 
+	//APointLabel* m_PointLable;
+
 	FMyPoint() { }
 
 	~FMyPoint()
@@ -42,22 +44,29 @@ struct FMyPoint
 		PointLocation = spawnLocation;
 	}
 
-	bool SpawnPoint(const UObject* world, UParticleSystem* myParticleSystem)
+	bool SpawnPoint(UWorld* world, UParticleSystem* myParticleSystem)
 	{
 		check(!PointLocation.ContainsNaN());
-
-		SparkPSC = UGameplayStatics::SpawnEmitterAtLocation(world, myParticleSystem, PointLocation, FRotator(0.0f));
-
-		if (SparkPSC)
+		
+		if (world)
 		{
-			SparkPSC->ActivateSystem();
-			IsSpawned = true;
-			return true;
+			SparkPSC = UGameplayStatics::SpawnEmitterAtLocation(world, myParticleSystem, PointLocation, FRotator(0.0f));
+
+			if (SparkPSC)
+			{
+				SparkPSC->ActivateSystem();
+				IsSpawned = true;
+
+
+				/*FRotator Rotation(0.0f, 0.0f, 0.0f);
+				FActorSpawnParameters SpawnInfo;
+				m_PointLable = world->SpawnActor<APointLabel>(PointLocation, Rotation, SpawnInfo);
+				*/
+
+				return true;
+			}
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	void Teardown()
@@ -67,6 +76,11 @@ struct FMyPoint
 			SparkPSC->Deactivate();
 			SparkPSC->DestroyComponent();
 		}
+
+		/*if (m_PointLable) 
+		{
+			m_PointLable->Destroy();
+		}*/
 		
 	}
 };
@@ -100,7 +114,7 @@ struct FMyBeam
 		EndPoint = spawnEndPoint;
 	}
 
-	bool SpawnBeam(const UObject* world, UParticleSystem* myParticleSystem)
+	bool SpawnBeam(UWorld* world, UParticleSystem* myParticleSystem)
 	{
 		check(!StartPoint->PointLocation.ContainsNaN());
 		check(!EndPoint->PointLocation.ContainsNaN());

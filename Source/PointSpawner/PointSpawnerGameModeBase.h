@@ -6,6 +6,11 @@
 #include "PointPlotter.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/GameModeBase.h"
+#include "Pattern.h"
+#include "RandomPath.h"
+#include "Spiral.h"
+#include "SpherePattern.h"
+#include "Cylinder.h"
 #include "PointSpawnerGameModeBase.generated.h"
 
 /**
@@ -24,6 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
 		void PlotSpiral();
 	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
+		void PlotSphere();
+	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
+		void PlotCylinder();
+	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
 		void ReturnToMenu();
 
 protected:
@@ -36,4 +45,7 @@ protected:
 	UUserWidget* CurrentWidget;
 
 	APointPlotter* m_PointPlotter;
+
+private:
+	void ApplyPattern(Pattern* PatternToPlot);
 };

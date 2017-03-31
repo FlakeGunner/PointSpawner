@@ -1,9 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PointSpawner.h"
-#include "Pattern.h"
-#include "RandomPath.h"
-#include "Spiral.h"
 #include "PointSpawnerGameModeBase.h"
 
 void APointSpawnerGameModeBase::BeginPlay()
@@ -11,7 +8,6 @@ void APointSpawnerGameModeBase::BeginPlay()
 	Super::BeginPlay();
 	ChangeMenuWidget(StartingWidgetClass);
 }
-
 
 void APointSpawnerGameModeBase::ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass)
 {
@@ -32,32 +28,29 @@ void APointSpawnerGameModeBase::ChangeMenuWidget(TSubclassOf<UUserWidget> NewWid
 
 void APointSpawnerGameModeBase::PlotDirection(EPlotDirection Direction)
 {
-	UWorld* World = GetWorld();
-	
-	if (World != nullptr)
-	{
-		APlayerController* PlayerController = World->GetFirstPlayerController();
-		if (PlayerController != nullptr)
-		{
-			PlayerController->bShowMouseCursor = false;
-			PlayerController->SetInputMode(FInputModeGameAndUI());
-
-			FVector Location(0.0f, 0.0f, 0.0f);
-			FRotator Rotation(0.0f, 0.0f, 0.0f);
-			FActorSpawnParameters SpawnInfo;
-			m_PointPlotter = World->SpawnActor<APointPlotter>(Location, Rotation, SpawnInfo);
-			Pattern* RandomPathPattern = new RandomPath(32, Direction);
-			m_PointPlotter->PlotPattern(RandomPathPattern);
-
-		}
-	}
+	ApplyPattern(new RandomPath(32, Direction));
 }
 
 void APointSpawnerGameModeBase::PlotSpiral()
 {
+	ApplyPattern(new Spiral(32));
+}
+
+void APointSpawnerGameModeBase::PlotSphere()
+{
+	ApplyPattern(new SpherePattern(36, 300));
+}
+
+void APointSpawnerGameModeBase::PlotCylinder()
+{
+	ApplyPattern(new Cylinder(24, 10, 300));
+}
+
+void APointSpawnerGameModeBase::ApplyPattern(Pattern* PatternToPlot)
+{
 	UWorld* World = GetWorld();
 
-	if (World != nullptr)
+	if (World)
 	{
 		APlayerController* PlayerController = World->GetFirstPlayerController();
 		if (PlayerController != nullptr)
@@ -69,8 +62,8 @@ void APointSpawnerGameModeBase::PlotSpiral()
 			FRotator Rotation(0.0f, 0.0f, 0.0f);
 			FActorSpawnParameters SpawnInfo;
 			m_PointPlotter = World->SpawnActor<APointPlotter>(Location, Rotation, SpawnInfo);
-			Pattern* RandomPathPattern = new Spiral(32);
-			m_PointPlotter->PlotPattern(RandomPathPattern);
+			
+			m_PointPlotter->PlotPattern(PatternToPlot);
 
 		}
 	}

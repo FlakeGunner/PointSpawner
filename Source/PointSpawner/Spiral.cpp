@@ -8,6 +8,11 @@ Spiral::Spiral(int32 NumberOfPoints)
 	m_NumberOfPoints = NumberOfPoints;
 }
 
+int32 Spiral::GetNumberOfPoints()
+{
+	return m_NumberOfPoints;
+}
+
 void Spiral::GeneratePattern()
 {
 	float generatedX, generatedY, generatedZ, radius;

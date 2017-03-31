@@ -4,15 +4,22 @@
 
 #include "Kismet/KismetMathLibrary.h"
 #include "Pattern.h"
+
 /**
  * 
  */
-class POINTSPAWNER_API Spiral: public Pattern
+class POINTSPAWNER_API Cylinder: public Pattern
 {
 public:
-	Spiral(int32 NumberOfPoints);
+	Cylinder(int32 NumberOfPoints, int32 Layers, float Radius);
 
 	void GeneratePattern();
 
 	int32 GetNumberOfPoints();
+
+protected:
+
+	int32 m_NumberOfPoints;
+	int32 m_Layers;
+	float m_Radius;
 };
