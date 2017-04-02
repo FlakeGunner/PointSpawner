@@ -13,6 +13,8 @@ class POINTSPAWNER_API APointLabel : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APointLabel();
+	//True for Visible, False for hidden
+	void SetVisibilityOfPoint(bool Visibility);
 
 protected:
 	// Called when the game starts or when spawned

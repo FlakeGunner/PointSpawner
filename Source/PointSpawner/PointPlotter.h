@@ -22,6 +22,8 @@ public:
 
 	void TeardownPattern();
 
+	void TogglePointLocations();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,7 +41,7 @@ public:
 
 	int32 m_CurrentTime;
 
-	Pattern* m_RandomPath;
+	Pattern* m_Pattern;
 
 	UParticleSystem* m_Sparker;
 

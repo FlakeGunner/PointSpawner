@@ -14,6 +14,7 @@ void APointSpawnerPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	InputComponent->BindAction("ReturnToMenu", IE_Released, this, &APointSpawnerPlayerController::ReturnToMenu);
+	InputComponent->BindAction("TogglePointLocations", IE_Released, this, &APointSpawnerPlayerController::TogglePointLocations);
 }
 
 void APointSpawnerPlayerController::ReturnToMenu()
@@ -24,5 +25,14 @@ void APointSpawnerPlayerController::ReturnToMenu()
 		SetInputMode(FInputModeUIOnly());
 		bShowMouseCursor = true;
 		CurrentGameMode->ReturnToMenu();
+	}
+}
+
+void APointSpawnerPlayerController::TogglePointLocations()
+{
+	if (GetWorld())
+	{
+		APointSpawnerGameModeBase* CurrentGameMode = Cast<APointSpawnerGameModeBase>(GetWorld()->GetAuthGameMode());
+		CurrentGameMode->TogglePointLocations();
 	}
 }

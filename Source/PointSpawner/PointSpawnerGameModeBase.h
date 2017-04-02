@@ -35,6 +35,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Point Spawner")
 		void ReturnToMenu();
 
+	void TogglePointLocations();
+
 protected:
 	virtual void BeginPlay() override;
 	

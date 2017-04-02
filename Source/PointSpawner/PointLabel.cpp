@@ -19,6 +19,7 @@ void APointLabel::BeginPlay()
 	Super::BeginPlay();
 
 	m_PointLabel->SetHorizontalAlignment(EHTA_Right);
+	m_PointLabel->SetVisibility(false);
 	m_PointLabel->SetWorldSize(10.0f);
 	m_PointLabel->SetText(GetActorLocation().ToString());
 }
@@ -28,5 +29,10 @@ void APointLabel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void APointLabel::SetVisibilityOfPoint(bool Visibility)
+{
+	m_PointLabel->SetVisibility(Visibility);
 }
 

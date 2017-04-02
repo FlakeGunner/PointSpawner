@@ -20,4 +20,6 @@ public:
 	virtual void SetupInputComponent() override;
 
 	void ReturnToMenu();
+
+	void TogglePointLocations();
 };

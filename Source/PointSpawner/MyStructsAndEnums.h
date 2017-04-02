@@ -30,7 +30,7 @@ struct FMyPoint
 
 	UParticleSystemComponent* SparkPSC;
 
-	//APointLabel* m_PointLable;
+	APointLabel* m_PointLable;
 
 	FMyPoint() { }
 
@@ -58,15 +58,22 @@ struct FMyPoint
 				IsSpawned = true;
 
 
-				/*FRotator Rotation(0.0f, 0.0f, 0.0f);
+				FRotator Rotation(0.0f, 0.0f, 0.0f);
 				FActorSpawnParameters SpawnInfo;
 				m_PointLable = world->SpawnActor<APointLabel>(PointLocation, Rotation, SpawnInfo);
-				*/
 
 				return true;
 			}
 		}
 		return false;
+	}
+
+	void ToggleVisibility(bool Visibility)
+	{
+		if (m_PointLable)
+		{
+			m_PointLable->SetVisibilityOfPoint(Visibility);
+		}
 	}
 
 	void Teardown()

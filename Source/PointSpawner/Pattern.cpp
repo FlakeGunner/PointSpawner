@@ -6,6 +6,7 @@
 
 Pattern::Pattern()
 {
+	m_ShowPointLocations = false;
 }
 
 Pattern::~Pattern()
@@ -65,4 +66,31 @@ void Pattern::TeardownPattern()
 	m_Beam = nullptr;
 	m_Points.Empty();
 	m_Beams.Empty();
+}
+
+void Pattern::TogglePointLocations()
+{
+	if (m_ShowPointLocations)
+	{
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hide Point Locations"));
+		for (auto& CurPoint : m_Points)
+		{
+			CurPoint.ToggleVisibility(false);
+		}
+		
+		m_ShowPointLocations = false;
+
+		
+	}
+	else
+	{
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Show Point Locations"));
+		for (auto& CurPoint : m_Points)
+		{
+			CurPoint.ToggleVisibility(true);
+		}
+		m_ShowPointLocations = true;
+	}
 }

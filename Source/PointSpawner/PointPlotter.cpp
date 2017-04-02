@@ -41,7 +41,7 @@ void APointPlotter::Tick(float DeltaTime)
 void APointPlotter::AdvanceTimer()
 {
 	--m_CurrentTime;
-	m_RandomPath->SpawnNextStep(GetWorld());
+	m_Pattern->SpawnNextStep(GetWorld());
 	if (m_CurrentTime < 1)
 	{
 		//We're done counting down, so stop running the timer.
@@ -59,11 +59,11 @@ void APointPlotter::SpawnTimerHasFinished()
 
 void APointPlotter::PlotPattern(Pattern* PatternToPlot)
 {
-	m_RandomPath = PatternToPlot;
+	m_Pattern = PatternToPlot;
 
-	m_RandomPath->InitParticleSystems(m_Sparker, m_Beam);
+	m_Pattern->InitParticleSystems(m_Sparker, m_Beam);
 
-	m_RandomPath->GeneratePattern();
+	m_Pattern->GeneratePattern();
 
 	//must be called after generate pattern
 	m_CurrentTime = PatternToPlot->GetNumberOfPoints();
@@ -74,6 +74,11 @@ void APointPlotter::PlotPattern(Pattern* PatternToPlot)
 void APointPlotter::TeardownPattern()
 {
 	GetWorldTimerManager().ClearTimer(m_SpawnTimerHandle);
-	m_RandomPath->TeardownPattern();
+	m_Pattern->TeardownPattern();
+}
+
+void APointPlotter::TogglePointLocations()
+{
+	m_Pattern->TogglePointLocations();
 }
 

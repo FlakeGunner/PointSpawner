@@ -78,3 +78,8 @@ void APointSpawnerGameModeBase::ReturnToMenu()
 	ChangeMenuWidget(StartingWidgetClass);
 
 }
+
+void APointSpawnerGameModeBase::TogglePointLocations()
+{
+	m_PointPlotter->TogglePointLocations();
+}

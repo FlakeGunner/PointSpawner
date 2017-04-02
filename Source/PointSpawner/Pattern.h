@@ -26,6 +26,8 @@ public:
 
 	void TeardownPattern();
 
+	void TogglePointLocations();
+
 	int32 m_NumberOfPoints;
 
 protected:
@@ -37,4 +39,6 @@ protected:
 	UParticleSystem* m_Sparker;
 	
 	UParticleSystem* m_Beam;
+
+	bool m_ShowPointLocations;
 };
