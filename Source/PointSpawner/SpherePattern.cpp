@@ -20,7 +20,7 @@ void SpherePattern::GeneratePattern()
 	float currentLatitude = 0.0f;
 	float currentLongitude = 0.0f;
 		
-	for (int32 outer = 0; outer < m_NumberOfLayers; outer++)
+	for (int32 outer = 0; outer < (m_NumberOfLayers / 2); outer++)
 	{
 		currentLongitude = outer * (360 / m_NumberOfLayers);
 
@@ -31,19 +31,10 @@ void SpherePattern::GeneratePattern()
 			FMyPoint newPoint(currentVector);
 			m_Points.Add(newPoint);
 		}
-
-		/*int32 beamStart = outer * m_NumberOfPoints;
-		int32 beamEnd = ((outer * m_NumberOfPoints) + m_NumberOfPoints) - 1;
-
-		for (int32 n = 0; n < m_NumberOfPoints - 1; n++)
-		{
-			FMyBeam newBeam(&m_Points[beamStart + n], &m_Points[beamStart + n + 1]);
-			m_Beams.Add(newBeam);
-		*/
 		
 	}
 
-	for (int32 outer = 0; outer < m_NumberOfLayers; outer++)
+	for (int32 outer = 0; outer < (m_NumberOfLayers / 2); outer++)
 	{
 		int32 beamStart = outer * m_NumberOfPoints;
 		int32 beamEnd = ((outer * m_NumberOfPoints) + m_NumberOfPoints) - 1;
